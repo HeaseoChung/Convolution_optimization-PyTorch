@@ -45,7 +45,7 @@ cudaOccupancyMaxActiveBlocksPerMultiprocessorWithFla...         0.00%     188.00
                                             aten::zeros         0.00%      42.000us         0.00%      72.000us      72.000us       0.000us         0.00%       0.000us       0.000us             1  
                                             aten::copy_         0.00%      29.000us         0.00%      45.000us      45.000us       3.817ms         0.37%       3.817ms       3.817ms             1  
 -------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
-Self CPU time total: 4.324s
+Self CPU time total: 4.733s
 Self CUDA time total: 1.040s
 
 Total number of params : 1332931
@@ -96,8 +96,8 @@ Total number of params : 304835
 ```
 # Results
 ## EDSR using Standard Conv & EDSR using Depthwise separable Conv comparison
-### CPU time (standard < Depthwise separable)
-- Standard : 4.324s
+### CPU time (standard > Depthwise separable)
+- Standard : 4.733s
 - Depthwise separable : 4.570s
 
 <br />
