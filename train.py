@@ -84,7 +84,7 @@ def main(cfg):
     for idx in range(start_iters, total_iters):
         idx = idx + start_iters
         
-        if i > total_iters:
+        if idx > total_iters:
             break
 
         """  트레이닝 시작 """
