@@ -95,7 +95,7 @@ Self CUDA time total: 856.096ms
 Total number of params : 304835
 ```
 # Results
-## EDSR using Standard Conv & EDSR using Depthwise separable Conv comparison
+## EDSR using Standard Conv & using Depthwise separable Conv comparison
 ### CPU time (standard > Depthwise separable)
 - Standard : 4.733s
 - Depthwise separable : 4.570s
