@@ -2,9 +2,9 @@ import torch.nn as nn
 from torch.nn import functional as F
 from torch.cuda import amp
 
-class depthwise_separable_conv(nn.Module):
+class Depthwise_separable_conv(nn.Module):
     def __init__(self, nin, nout, kernel_size=3, padding=1, bias=False):
-        super(depthwise_separable_conv, self).__init__()
+        super(Depthwise_separable_conv, self).__init__()
         self.depthwise = nn.Conv2d(
             nin, nin, kernel_size=kernel_size, padding=padding, groups=nin, bias=bias
         )
@@ -26,7 +26,7 @@ class ResBlock(nn.Module):
                     nn.Conv2d(n_feats, n_feats, kernel_size=3, bias=True, padding=3//2)
                 )
             elif conv_type == "depthwise_separable":
-                depthwise_separable_conv(
+                Depthwise_separable_conv(
                     n_feats, n_feats, kernel_size=3, bias=True, padding=3//2
                 )
             else:
