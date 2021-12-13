@@ -58,17 +58,17 @@ class ResBlock_ds_conv(nn.Module):
 
 class EDSR(nn.Module):
     def __init__(
-        self, scale=2, num_channels=3, num_feats=64, num_blocks=16, res_scale=1.0, block_type="standard"
+        self, scale=2, num_channels=3, num_feats=64, num_blocks=16, res_scale=1.0, block_type="depthwise_separable"
     ):
         super(EDSR, self).__init__()
         self.head = nn.Conv2d(num_channels, num_feats, kernel_size=3, padding=3 // 2)
 
         if block_type == "standard":
             body = [ResBlock(num_feats, res_scale) for _ in range(num_blocks)]
-        elif block_type == "ds":
+        elif block_type == "depthwise_separable":
             body = [ResBlock_ds_conv(num_feats, res_scale) for _ in range(num_blocks)]
         else:
-            raise ValueError("Please select right block_type")
+            raise ValueError("Please select right block type")
 
         self.body = nn.Sequential(*body)
         self.tail = nn.Sequential(
