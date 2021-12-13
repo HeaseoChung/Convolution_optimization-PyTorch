@@ -112,6 +112,8 @@ Total number of params : 304835
 - Standard : 1332931
 - Depthwise separable : 304835
 
+<br />
+
 ### PSNR
 <table>
     <tr>
