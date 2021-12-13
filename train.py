@@ -106,7 +106,7 @@ def main(cfg):
         scaler.update()
 
         if cfg.training.use_wandb:
-            wandb.log({"loss": loss}, step=idx)
+            wandb.log({"loss": loss})
 
         if idx % 100 == 0:
             """  테스트 시작 """
@@ -135,7 +135,7 @@ def main(cfg):
             psnr_avg = psnr/len(eval_dataloader)
 
             if cfg.training.use_wandb:
-                wandb.log({"PSNR": psnr_avg}, step=idx+i)
+                wandb.log({"PSNR": psnr_avg})
 
             if psnr_avg > best_psnr:
                 best_psnr = psnr_avg
