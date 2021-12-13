@@ -113,5 +113,21 @@ Total number of params : 304835
 - Depthwise separable : 304835
 
 ### PSNR
-- Standard : 26.89
-- Depthwise separable : 26.66
+<table>
+    <tr>
+        <td><center>Bicubic</center></td>
+        <td><center>EDSR Standard (26.89 dB)</center></td>
+        <td><center>EDSR Depthwise Separable (26.66 dB)</center></td>
+    </tr>
+    <tr>
+    	<td>
+    		<center><img src="examples/sample_bicubic_x2.jpg"></center>
+    	</td>
+    	<td>
+    		<center><img src="examples/EDSR_x2_16_64_Standard.jpg"></center>
+    	</td>
+      <td>
+    		<center><img src="examples/EDSR_x2_16_64_Depthwise_separable.jpg"></center>
+    	</td>
+    </tr>
+</table>
