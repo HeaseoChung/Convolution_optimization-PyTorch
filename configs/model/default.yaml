@@ -1,0 +1,8 @@
+name: EDSR
+scale: 2
+res_block_type: "standard"
+n_channels: 3
+n_features: 64
+n_blocks: 16
+res_scale: 1.0
+pretrained_path: ""

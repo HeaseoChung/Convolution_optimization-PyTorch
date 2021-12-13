@@ -1,0 +1,11 @@
+train_dir: "/dataset/Flickr2K_training/"
+eval_dir: "/dataset/Flickr2K_valid/"
+ckpt_dir: "ckpt"
+n_workers: 4
+n_iters: 10000
+patch_size: 256
+batch_size: 16
+lr: 0.002
+seed: 123
+resume_ckpt: ""
+use_wandb: true
