@@ -17,34 +17,21 @@ class depthwise_separable_conv(nn.Module):
 
 
 class ResBlock(nn.Module):
-    def __init__(self, n_feats, res_scale=1.0):
+    def __init__(self, n_feats, res_scale=1.0, conv_type="standard"):
         super(ResBlock, self).__init__()
         m = []
         for i in range(2):
-            m.append(
-                nn.Conv2d(n_feats, n_feats, kernel_size=3, bias=True, padding=3 // 2)
-            )
-            if i == 0:
-                m.append(nn.ReLU(True))
-        self.body = nn.Sequential(*m)
-        self.res_scale = res_scale
-
-    def forward(self, x):
-        res = self.body(x).mul(self.res_scale)
-        res += x
-        return res * self.res_scale
-
-
-class ResBlock_ds_conv(nn.Module):
-    def __init__(self, n_feats, res_scale=1.0):
-        super(ResBlock_ds_conv, self).__init__()
-        m = []
-        for i in range(2):
-            m.append(
-                depthwise_separable_conv(
-                    n_feats, n_feats, kernel_size=3, bias=True, padding=3 // 2
+            if conv_type == "standard":
+                m.append(
+                    nn.Conv2d(n_feats, n_feats, kernel_size=3, bias=True, padding=3//2)
                 )
-            )
+            elif conv_type == "depthwise_separable":
+                depthwise_separable_conv(
+                    n_feats, n_feats, kernel_size=3, bias=True, padding=3//2
+                )
+            else:
+                raise ValueError("Please select right block type")
+
             if i == 0:
                 m.append(nn.ReLU(True))
         self.body = nn.Sequential(*m)
@@ -54,22 +41,15 @@ class ResBlock_ds_conv(nn.Module):
         res = self.body(x).mul(self.res_scale)
         res += x
         return res * self.res_scale
-
 
 class EDSR(nn.Module):
     def __init__(
-        self, scale=2, num_channels=3, num_feats=64, num_blocks=16, res_scale=1.0, block_type="depthwise_separable"
+        self, scale=2, num_channels=3, num_feats=64, num_blocks=16, res_scale=1.0, conv_type="standard"
     ):
         super(EDSR, self).__init__()
         self.head = nn.Conv2d(num_channels, num_feats, kernel_size=3, padding=3 // 2)
 
-        if block_type == "standard":
-            body = [ResBlock(num_feats, res_scale) for _ in range(num_blocks)]
-        elif block_type == "depthwise_separable":
-            body = [ResBlock_ds_conv(num_feats, res_scale) for _ in range(num_blocks)]
-        else:
-            raise ValueError("Please select right block type")
-
+        body = [ResBlock(num_feats, res_scale, conv_type) for _ in range(num_blocks)]
         self.body = nn.Sequential(*body)
         self.tail = nn.Sequential(
             nn.Conv2d(

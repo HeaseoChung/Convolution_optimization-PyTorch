@@ -37,7 +37,7 @@ def main(cfg):
     """ Torch Seed 설정 """
     torch.manual_seed(cfg.training.seed)
 
-    model = EDSR(scale=cfg.model.scale, num_channels=cfg.model.n_channels, num_feats=cfg.model.n_features, num_blocks=cfg.model.n_blocks, res_scale=cfg.model.res_scale, block_type=cfg.model.res_block_type).to(device)
+    model = EDSR(scale=cfg.model.scale, num_channels=cfg.model.n_channels, num_feats=cfg.model.n_features, num_blocks=cfg.model.n_blocks, res_scale=cfg.model.res_scale, conv_type=cfg.model.conv_type).to(device)
     """ Loss 및 Optimizer 설정 """
     pixel_criterion = nn.MSELoss().to(device)
     psnr_optimizer = torch.optim.Adam(model.parameters(), cfg.training.lr, (0.9, 0.999))
