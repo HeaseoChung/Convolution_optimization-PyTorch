@@ -1,6 +1,6 @@
 import torch.nn as nn
 from torch.nn import functional as F
-
+from torch.cuda import amp
 
 class depthwise_separable_conv(nn.Module):
     def __init__(self, nin, nout, kernel_size=3, padding=1, bias=False):
@@ -58,25 +58,33 @@ class ResBlock_ds_conv(nn.Module):
 
 class EDSR(nn.Module):
     def __init__(
-        self, scale_factor=2, num_channels=3, num_feats=64, num_blocks=16, res_scale=1.0
+        self, scale=2, num_channels=3, num_feats=64, num_blocks=16, res_scale=1.0, block_type="standard"
     ):
         super(EDSR, self).__init__()
         self.head = nn.Conv2d(num_channels, num_feats, kernel_size=3, padding=3 // 2)
-        body = [ResBlock_ds_conv(num_feats, res_scale) for _ in range(num_blocks)]
+
+        if block_type == "standard":
+            body = [ResBlock(num_feats, res_scale) for _ in range(num_blocks)]
+        elif block_type == "ds":
+            body = [ResBlock_ds_conv(num_feats, res_scale) for _ in range(num_blocks)]
+        else:
+            raise ValueError("Please select right block_type")
+
         self.body = nn.Sequential(*body)
         self.tail = nn.Sequential(
             nn.Conv2d(
                 num_feats,
-                num_feats * (scale_factor ** 2),
+                num_feats * (scale ** 2),
                 kernel_size=3,
                 stride=1,
                 padding=1,
             ),
-            nn.PixelShuffle(scale_factor),
+            nn.PixelShuffle(scale),
             nn.ReLU(True),
             nn.Conv2d(num_feats, num_channels, kernel_size=3, stride=1, padding=1),
         )
-
+     
+    @amp.autocast()
     def forward(self, x):
         x = self.head(x)
         res = self.body(x)
